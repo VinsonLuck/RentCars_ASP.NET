@@ -1,0 +1,27 @@
+﻿<script type="text/template" id="component-table-car">
+    <div class="card-container">
+        <% if (data.length > 0) { %>
+            <% _.each(data, function(item, index) { %>
+                <% if(item.year == filteryear || filteryear === "") {%>
+                    <div class="car-card">
+                        <div class="car-image">
+                            <img src="<%= item.image_url %>" alt="Car Image" style="width: 100%; height: auto;">
+                        </div>
+                        <div class="car-info">
+                            <h3 class="car-name"><%= item.name %></h3>
+                            <p class="car-price">Harga: Rp. <%= item.price_per_day %> / hari</p>
+                            <div class="car-action">
+                                <a href="#" class="rent-now-btn">Sewa Sekarang</a>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% }); %>
+        <% } else { %>
+            <p class="no-data">No data found</p>
+        <% } %>
+    </div>
+</script>
+
+<script></script>
+

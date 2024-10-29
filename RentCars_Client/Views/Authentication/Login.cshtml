@@ -1,0 +1,122 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Login";
+}
+<link rel="stylesheet" href="~/css/authentication.css">
+
+<div class="FormContainer">
+    <h1>Login ke RentCar</h1>
+    <form action="">
+       <label for="">Username</label>
+       <input id="txtusername" type="text" placeholder="Masukkan username Anda">      
+        <label for="">Password</label>
+        <input id="txtpassword" type="password" placeholder="Masukkan password Anda">
+        <button id="RegistrasiButtonSubmit">Login</button>
+        <div id="-errorMessages"></div>
+    </form>
+    
+    <a asp-area="" asp-controller="MsCustomer" asp-action="Registrasi">Belum punya akun? Registrasi disini</a>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(async function(){
+            var app = {};
+            app.getReq = function (url,params){
+                return new Promise(function(resolve,reject){
+                   $.ajax({
+                        type:"GET",
+                        url: url,
+                        data: params,
+                        success: function(response){
+                            resolve(response);
+                        },
+                        error: function(error){
+                            reject(error);
+                        },
+                        contentType: "application/json"
+                   })
+                });  
+            }
+
+            app.postReq = function (url,params){
+                return new Promise(function(resolve,reject){
+                    $.ajax({
+                        type:"POST",
+                        url: url,
+                        data: JSON.stringify(params),
+                        xhrFields: {
+                            withCredentials: true 
+                        },
+                        success: function(response){
+                            resolve(response);
+                        },
+                        error: function(error){
+                            reject(error);
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        
+                   })
+                });  
+            }
+
+            async function loginCustomer(param){
+                try
+                {
+                    let loginCustomerResponse = await app.postReq("http://localhost:5168/api/MsCustomer/Login",param);
+                    alert(JSON.stringify(loginCustomerResponse));
+                    return loginCustomerResponse;
+                }catch(error)
+                {
+                    alert(error);
+                    return {success:false,message:"Login Failed"};
+                }
+            }
+
+            var param = {};
+            function validateRequest(){
+                errorMessages= "";
+                $(".error-text").html("");
+
+                Customerusername = $("#txtusername").val();
+                Customerpassword = $("#txtpassword").val();
+
+                if(Customerusername==null||Customerusername==""){
+                    errorMessages = "Nama cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(Customerpassword==null||Customerpassword==""){
+                    errorMessages = "Password cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }
+                if(errorMessages!= "")
+                {
+                    alert("There is an error in your request");
+                    return false;
+                }
+                param={
+                    name: Customerusername,
+                    password: Customerpassword
+                }
+                return true;
+                
+            }
+
+            $("#RegistrasiButtonSubmit").on("click",async function(event){
+                event.preventDefault();
+                if(validateRequest()){
+                    const response = await loginCustomer(param);
+                    if(response.success){
+                        window.location.replace("/MsCar/Home");
+                    }else{
+                        $('#-errorMessages').html(response.message);
+                    }
+                }
+            })
+        });
+
+    </script>
+}

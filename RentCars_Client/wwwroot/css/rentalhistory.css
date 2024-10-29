@@ -1,0 +1,29 @@
+.rentalhistory-content{
+   margin-top:3em;
+   display:flex;
+   flex-direction:column;
+   justify-content:center;
+}
+.rentalhistory-content h1{
+
+    text-align:center;
+    margin-bottom:2em;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+th, td {
+    border: 2px solid #ddd; 
+    padding: 8px;
+    text-align: left; 
+    background-color:white
+}
+
+th {
+    background-color: #d4d4d4;
+    font-weight: bold; 
+}

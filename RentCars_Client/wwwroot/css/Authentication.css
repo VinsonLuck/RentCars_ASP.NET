@@ -1,0 +1,48 @@
+.FormContainer{
+    margin-top:3em;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    width:25em;
+    background-color:#d998ed;
+    height:35em;
+    align-items:center;
+    border-radius:10px;
+    margin-bottom:2em;
+}
+.FormContainer h1{
+    font-size:1.5em;
+    margin-bottom:0.5em;
+}
+
+.FormContainer form{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    width:20em;
+    line-height:1.8em;
+}
+.FormContainer label{
+    text-align:left;
+}
+
+#RegistrasiButtonSubmit{
+    margin-top:1em;
+    background-color:#f0ae99;
+    border:none;
+    border-radius:3px;
+    height:2em;
+    color:white;
+}
+#RegistrasiButtonSubmit:hover{
+    background-color:#de5b5b;
+    transition:0.8s;
+}
+.FormContainer a{
+
+    margin-top:1em;
+    font-size:1em;
+    font-weight:300;
+}

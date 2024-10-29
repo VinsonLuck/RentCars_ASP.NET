@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
+<div class="HomePageContainer">
+    <h1>Selamat Datang di Rental Mobil Kami</h1>
+    <div class="FilterContainer">
+        <div class="PickupDateContainer">
+            <label for="PickupDate">Pickup Date:</label>
+            <input type="date" placeholder="Select Pickup Date" class="PickupDate">
+        </div>
+        <div class="ReturnDateContainer">
+            <label for="ReturnDate">Return Date:</label>
+            <input type="date" placeholder="Select Return Date" class="ReturnDate">
+        </div>
+        <div class="FilterYearContainer">
+            <label for="FilterYear">Filter Tahun Pembuatan</label>
+            <input id="filteryearnumber"type="number" placeholder="Select Year" min="1900" max="2020" step="1" class="FilterYear">
+        </div>
+        <div id="FindContainer">
+            <Button>Cari</Button>
+        </div>
+    </div>
+    <div class="SortirContainer">
+        <label for="SortirBox">Sortir Berdasarkan</label>
+        <select name="Sort By:" size:"2">
+            <option value="">Harga Terendah - Tertinggi</option>
+            <option value="">Harga Tertinggi - Terendah</option>
+        </select>
+    </div>
+    <div id="wrapper-table-car">
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Views/Home/Component/component-table-car.cshtml")
+
+@section Scripts{
+    <script>
+        $(document).ready(async function(){
+            var app = {};
+            app.getReq = function (url,params){
+                return new Promise(function(resolve,reject){
+                   $.ajax({
+                        type:"GET",
+                        url: url,
+                        data: params,
+                        success: function(response){
+                            resolve(response);
+                        },
+                        error: function(error){
+                            reject(error);
+                        },
+                        contentType: "application/json"
+                   })
+                });  
+            }
+
+            async function getCarList(){
+                try{
+                    let CarListResponse = await app.getReq("http://localhost:5168/api/MsCar");
+                    if(CarListResponse){
+                        return CarListResponse.data; 
+                    }
+                }catch(error){
+                    alert(error);
+                    return false;
+                }
+            }
+            let filteryear="";
+            async function initPage(){
+                const carList = await getCarList();
+                filteryear = $("#filteryearnumber").val();
+                const templateTableCar = _.template(
+                    $("#component-table-car").html()
+                )
+                $("#wrapper-table-car").html(
+                    templateTableCar({data: carList,filteryear})
+                )
+            }
+
+            $("#FindContainer").on("click",async function(event){
+                event.preventDefault();
+                const carList = await getCarList();
+                filteryear = $("#filteryearnumber").val();
+                const templateTableCar = _.template(
+                    $("#component-table-car").html()
+                )
+                $("#wrapper-table-car").html(
+                    templateTableCar({data: carList,filteryear})
+                )
+            })
+            
+        
+
+            await initPage();
+        });
+
+    </script>
+}

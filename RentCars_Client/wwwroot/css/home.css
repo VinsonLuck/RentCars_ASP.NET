@@ -1,0 +1,106 @@
+.HomePageContainer{
+   
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    margin-left:4em;
+    margin-right:4em;
+}
+
+.HomePageContainer h1{
+    text-align:center;
+    color:#3c0457;
+    margin-bottom:2em;
+    margin-top:2em;
+}
+.FilterContainer{
+    display:flex;
+    width:40em;
+    height:5em;
+    background-color:#93c1f5;
+    gap:2em;
+    align-items:center;
+    padding:1em;
+    border-radius:10px;
+}
+.PickupDateContainer, .ReturnDateContainer, .FilterYearContainer{
+    display:flex;
+    flex-direction:column;
+}
+#FindContainer{
+    display:flex;
+    align-items:center; 
+}
+#FindContainer button{
+    background-color:#f0ae99;
+    border:none;
+    border-radius:5px;
+    width:6em;
+    height:3em;
+    font-weight:500;
+    color:white;
+}
+#FindContainer button:hover{
+    background-color:#de5b5b;
+    transition:0.8s;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(6em, 1fr));
+    gap: 1em;
+    padding: 1em;
+}
+
+
+.car-card {
+    display:flex;
+    background-color: #93c1f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    justify-content:center;
+    flex-direction:column;
+}
+
+
+.car-image img {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    width: 100%;
+    height: auto;
+}
+
+.car-info {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    padding: 16px;
+}
+
+.car-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.car-price {
+    color: #333;
+    margin: 8px 0;
+}
+
+.car-action {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.rent-now-btn {
+    background-color: #edca98;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    font-size:1em;
+}

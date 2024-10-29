@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RentCar - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/nav-bar.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <div class="nav-bar-inside">
+                <div class="hamburger_on">
+                    <div class="inside_hamburger_on">
+                        <div class="button_close">
+                            <button onclick="hamburgerClosed()">X</button>
+                        </div>
+                        <a asp-area="" asp-controller="" asp-action="">Home</a>
+                        <a asp-area="" asp-controller="TrRental" asp-action="RentalHistory">Riwayat Penyewaan</a>
+                        <a asp-area="" asp-controller="" asp-action="">Kontak Kami</a>
+                    </div>
+                </div>
+               <div class="nav-bar-left">
+                    <a href="javascript:void(0);" class="icon" onclick="hamburgerClicked()">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <a asp-area="" asp-controller="" asp-action="">RentCar</a>
+               </div>
+               @if(ViewBag.IsLoggedIn != null && ViewBag.IsLoggedIn)
+                {
+                    <div class="nav-bar-right">
+                        <ul class="nav-bar-right-content">
+                            <h2>Hai, @ViewBag.name ! </h2>
+                            <li class="LoginBtn"><a asp-area="" asp-controller="MsCustomer" asp-action="Logout" method="post" >Logout</a></li>
+                        </ul>
+                    </div>
+                }
+                else{
+                    <div class="nav-bar-right">
+                        <ul class="nav-bar-right-content">
+                            <li class="LoginBtn"><a asp-area="" asp-controller="MsCustomer" asp-action="Login">Login</a></li>
+                            <li class="RegisBtn"><a asp-area="" asp-controller="MsCustomer" asp-action="Registrasi">Registrasi</a></li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 RenCar App. Semua Hak Dilindungi.<a asp-area="" asp-controller="Home" asp-action=""></a>
+        </div>
+    </footer>
+    <script src="~/js/nav-bar.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore@latest/underscore-umd-min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

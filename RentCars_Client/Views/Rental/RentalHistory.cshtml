@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Rental History";
+    var customerId = ViewBag.customerId;
+}
+<link rel="stylesheet" href="~/css/rentalhistory.css">
+
+<div class="rentalhistory-content">
+    <h1>Mobil yang pernah disewa</h1>
+    <div id=wrapper-table-rental></div>
+</div>
+
+@await Html.PartialAsync("~/Views/Rental/Component/component-table-rental.cshtml");
+
+@section Scripts{
+    <script>
+        $(document).ready(async function(){
+            var app = {};
+            app.getReq = function (url,params){
+                return new Promise(function(resolve,reject){
+                   $.ajax({
+                        type:"GET",
+                        url: url,
+                        data: params,
+                        success: function(response){
+                            resolve(response);
+                        },
+                        error: function(error){
+                            reject(error);
+                        },
+                        contentType: "application/json"
+                   })
+                });  
+            }
+            
+            async function getRentalList(id){
+                try{
+                    let rentalListResponse = await app.getReq("/TrRental/FindRentalByCustomerId?id=" +id);
+                    if(rentalListResponse){
+                        return rentalListResponse.data;
+                    }
+                }catch(error){
+                    alert(error);
+                    return false;
+                }
+            }
+            async function getCarList(){
+                try{
+                    let carListResponse = await app.getReq("/MsCar/GetCar"); 
+                    if(carListResponse){
+                        return carListResponse.data;
+                    }
+                }catch(error){
+                    alert(error);
+                    return false;
+                }
+            }
+            
+            async function initPage(){
+                const rentalList = await getRentalList("@customerId");
+                const carList = await getCarList();
+                console.log(carList);
+                const templateTableRental = _.template(
+                    $("#component-table-rental").html()
+                )
+                $("#wrapper-table-rental").html(
+                    templateTableRental({data: rentalList,carList: carList})
+                )
+            }
+
+            @* async function initPage(){
+                const rentalList = await getRentalList("@customerId");
+                console.log("Template",$("#component-table-rental").html());
+                if(rentalList && rentalList.length > 0){
+                    const templateTableRental = _.template(
+                        $("#component-table-rental").html()
+                    );
+
+                    $("#wrapper-table-rental").html(
+                        templateTableRental({data:rentalList})
+                    );
+                }else{
+                    $("#wrapper-table-rental").html("<p> No Rental History Available.</p>");
+                }
+            } *@
+            initPage();
+        });
+    </script>
+}

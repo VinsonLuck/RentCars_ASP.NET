@@ -1,0 +1,154 @@
+﻿@{
+    ViewData["Title"] = "Registrasi";
+}
+<link rel="stylesheet" href="~/css/authentication.css">
+
+<div class="FormContainer">
+    <h1>Registrasi ke RentCar</h1>
+    <form action="">
+        <label for="">Nama Lengkap</label>
+        <input id="txtCustomernama" type="text" placeholder="Masukkan nama lengkap Anda">
+        <label for="">Email</label>
+        <input id="txtCustomeremail" type="email" placeholder="Masukkan email Anda">
+        <label for="">Password</label>
+        <input id="txtCustomerpassword" type="password" placeholder="Masukkan password Anda">
+        <label for="">Re-Password</label>
+        <input id="txtCustomerre-password" type="password" placeholder="Masukkan kembali password Anda">
+        <label for="">Nomor Telefon</label>
+        <input id="txtCustomertelefon"type="text" placeholder="Masukkan nomor telefon Anda">
+        <label for="">Alamat</label>
+        <input id="txtCustomeraddress" type="text" placeholder="Masukkan alamat Anda">
+        <div id="-errorMessages" class="error-text text-danger"></div>
+        <button id="RegistrasiButtonSubmit">Registrasi</button>
+    </form>
+    
+    <a asp-area="" asp-controller="MsCustomer" asp-action="Login">Sudah punya akun? Login disini</a>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(async function(){
+            var app = {};
+            app.getReq = function (url,params){
+                return new Promise(function(resolve,reject){
+                   $.ajax({
+                        type:"GET",
+                        url: url,
+                        data: params,
+                        success: function(response){
+                            resolve(response);
+                        },
+                        error: function(error){
+                            reject(error);
+                        },
+                        contentType: "application/json"
+                   })
+                });  
+            }
+
+            app.postReq = function (url,params){
+                return new Promise(function(resolve,reject){
+                    $.ajax({
+                        type:"POST",
+                        url: url,
+                        data: JSON.stringify(params),
+                        success: function(response){
+                            resolve(response);
+                        },
+                        error: function(error){
+                            reject(error);
+                        },
+                        contentType: "application/json; charset=utf-8",
+                   })
+                });  
+            }
+
+            async function createCustomer(param){
+                try
+                {
+                    console.log(param);
+                    let createCustomerResponse = await app.postReq("http://localhost:5168/api/MsCustomer",param);
+                    alert(createCustomerResponse.data)
+                    clearForm();
+                }catch(error)
+                {
+                    alert(error);
+                    return false;
+                }
+            }
+
+            var param = {};
+            function validateRequest(){
+                errorMessages= "";
+                $(".error-text").html("");
+
+                newCustomerName = $("#txtCustomernama").val();
+                newCustomerEmail = $("#txtCustomeremail").val();
+                newCustomerPassword = $("#txtCustomerpassword").val();
+                newCustomerRePassword = $("#txtCustomerre-password").val();
+                newCustomerTelefon = $("#txtCustomertelefon").val();
+                newCustomerAddress= $("#txtCustomeraddress").val();
+
+                if(newCustomerName==null||newCustomerName==""){
+                    errorMessages = "Nama cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(newCustomerEmail==null||newCustomerEmail==""){
+                    errorMessages = "Email cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(newCustomerPassword==null||newCustomerPassword==""){
+                    errorMessages = "Password cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(newCustomerRePassword==null||newCustomerRePassword==""){
+                    errorMessages = "Re-Password cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(newCustomerRePassword!= newCustomerPassword){
+                    errorMessages = "Re-Password must be the same with Password";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(newCustomerTelefon==null||newCustomerTelefon==""){
+                    errorMessages = "Telefon cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }else if(newCustomerAddress==null||newCustomerAddress==""){
+                    errorMessages = "Address cannot be empty";
+                    $("#-errorMessages").html(errorMessages);
+                    return false;
+                }
+                if(errorMessages!= "")
+                {
+                    alert("There is an error in your request");
+                    return false;
+                }
+                param={
+                    name: newCustomerName,
+                    email: newCustomerEmail,
+                    password: newCustomerPassword,
+                    phone_number: newCustomerTelefon,
+                    address: newCustomerAddress
+                }
+                return true;
+                
+            }
+            function clearForm(){
+                $("#txtCustomernama").val('');
+                $("#txtCustomeremail").val('');
+                $("#txtCustomerpassword").val('');
+                $("#txtCustomerre-password").val('');
+                $("#txtCustomertelefon").val('');
+                $("#txtCustomeraddress").val('');
+            }
+
+            $("#RegistrasiButtonSubmit").on("click",async function(event){
+                event.preventDefault();
+                if(validateRequest()){
+                    await createCustomer(param);
+                }
+            })
+        });
+
+    </script>
+}

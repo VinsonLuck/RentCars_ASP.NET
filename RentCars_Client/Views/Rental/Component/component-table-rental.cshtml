@@ -1,0 +1,65 @@
+﻿<script type="text/template" id="component-table-rental">
+    <table class="table-rentalhistory">
+        <thead class="table-secondary">
+            <tr>
+                <th>Tanggal Sewa</th>
+                <th>Mobil</th>
+                <th>Harga Sewa per Hari</th>
+                <th>Total Hari</th>
+                <th>Total Harga</th>
+                <th>Status Pembayaran</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (data.length > 0) { %>
+                <% _.each(data, function(item, index) { %>
+                    <tr>
+                        <td><%= formatDate(item.rental_date) + ' - ' + formatDate(item.return_date) %></td>
+                        <td><%= getCarName(item.car_id, carList) %></td>
+                        <td>Rp. <%= (item.total_price / calculateTotalDays(item.rental_date,item.return_date)).toFixed(2) %></td>
+                        <td><%= calculateTotalDays(item.rental_date,item.return_date) %></td>
+                        <td>Rp. <%= item.total_price %></td>
+                        <td><%= paymentCheck(item.payment_status) %></td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td class="text-center">No data found</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</script>
+
+<script>
+    function formatDate(dateString) {
+        const options = { day: 'numeric', month: 'long', year:'numeric' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('id-ID', options);
+    }
+
+    function calculateTotalDays(startDate, endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        return diffDays;
+    }
+    function paymentCheck(payment_status){
+        let status;
+        if(payment_status== true){
+            status = "Sudah Dibayar";
+        }else{
+            status = "Belum Dibayar";
+        }
+        return status;
+    }
+
+
+    function getCarName(car_id, carList){
+        const car = carList.find(x => x.car_id === car_id)
+        return car? car.name: 'Nama mobil tidak ditemukan';
+    }
+
+    
+</script>
